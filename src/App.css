@@ -1,0 +1,19 @@
+
+
+/*AppSidebar */
+/* .bg-primary-darkGrey {
+    --tw-bg-opacity: 1;
+    background-color: rgb(39 33 49 / var(--tw-bg-opacity, 1));
+} */
+
+.bg-white {
+    background-color: white !important;
+}
+
+
+.form-display {
+        /* max-height: 80vh;
+    overflow: auto; */
+    margin-top: 30px;
+}
+

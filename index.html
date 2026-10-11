@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+   <!-- <link href="./output.css" rel="stylesheet"> -->
+  <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+  <script>
+    (function () {
+      try {
+        const userData = JSON.parse(localStorage.getItem("user") || "{}");
+        const savedTheme = localStorage.getItem("preferred_theme");
+        const userTheme = userData?.preferred_theme;
+
+        const theme = savedTheme || userTheme || "light";
+
+        document.documentElement.setAttribute("data-bs-theme", theme);
+        document.documentElement.setAttribute("data-theme", theme);
+
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark-theme");
+          document.documentElement.classList.remove("light-theme");
+        } else {
+          document.documentElement.classList.add("light-theme");
+          document.documentElement.classList.remove("dark-theme");
+        }
+
+        localStorage.setItem("preferred_theme", theme);
+      } catch (error) {
+        console.warn(
+          "Theme initialization failed, falling back to light theme:",
+          error
+        );
+        document.documentElement.setAttribute("data-bs-theme", "light");
+        document.documentElement.setAttribute("data-theme", "light");
+        document.documentElement.classList.add("light-theme");
+        document.documentElement.classList.remove("dark-theme");
+      }
+    })();
+  </script>
+
+  <style>
+    html {
+      background-color: #ffffff;
+    }
+
+    html[data-theme="dark"],
+    html[data-bs-theme="dark"] {
+      background-color: #0f1419 !important;
+    }
+
+    body {
+      margin: 0;
+      transition: background-color 0.2s ease;
+    }
+
+    html[data-theme="dark"] body,
+    html[data-bs-theme="dark"] body {
+      background-color: #0f1419 !important;
+      color: #ffffff !important;
+    }
+  </style>
+  <style>
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .highlighted-section {
+      outline: 2px solid #3F20FB;
+      background-color: rgba(63, 32, 251, 0.1);
+    }
+
+    .edit-button {
+      position: absolute;
+      z-index: 1000;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    html,
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;500;600;700;800;900&amp;display=swap">
+  <!-- <script>tailwind.config = {
+      "theme": {
+        "extend": {
+          "colors": {
+            "primary": "#0061ed",
+            "primaryDark": "#004bc7",
+            "primaryLight": "#4d8ff5",
+            "secondary": "#272131",
+            "secondaryLight": "#3d3649",
+            "lightBlue": "#e6f0ff",
+            "lightGrey": "#f5f5f5",
+            "success": "#4ade80",
+            "successLight": "#bbf7d0",
+            "warning": "#facc15",
+            "warningLight": "#fef08a",
+            "danger": "#ef4444",
+            "dangerLight": "#fecaca",
+            "orange": "#fb923c",
+            "orangeLight": "#fed7aa"
+          },
+          "fontFamily": {
+            "inter": [
+              "Inter",
+              "sans-serif"
+            ],
+            "playfair": [
+              "Playfair Display",
+              "serif"
+            ],
+            "merriweather": [
+              "Merriweather",
+              "serif"
+            ],
+            "fira": [
+              "Fira Code",
+              "monospace"
+            ],
+            "sans": [
+              "Inter",
+              "sans-serif"
+            ]
+          }
+        }
+      }
+    };</script> -->
+  <title>RD Custom Awards</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

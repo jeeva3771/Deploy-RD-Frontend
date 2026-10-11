@@ -1,0 +1,31 @@
+/* Hide everything except print content when printing */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    /* Ensure proper page breaks */
+    table {
+        page-break-inside: auto;
+    }
+    
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+    
+    thead {
+        display: table-header-group;
+    }
+    
+    tfoot {
+        display: table-footer-group;
+    }
+}
+
+/* Hide print view on screen */
+@media screen {
+    .print-only {
+        display: none;
+    }
+}

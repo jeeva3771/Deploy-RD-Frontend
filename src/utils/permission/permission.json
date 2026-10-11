@@ -1,0 +1,200 @@
+{
+  "permissions": [
+    {
+      "module": "Dashboard",
+      "permission": 1
+    },
+    {
+      "module": "Process",
+      "permission": 2
+    },
+    {
+      "module": "Department",
+      "permission": 3
+    },
+    {
+      "module": "Machine",
+      "permission": 4
+    },
+    {
+      "module": "Role",
+      "permission": 5
+    },
+    {
+      "module": "Customer",
+      "permission": 6
+    },
+    {
+      "module": "Vendor",
+      "permission": 7
+    },
+    {
+      "module": "Outsource Vendor",
+      "permission": 36
+    },
+    {
+      "module": "User",
+      "permission": 8
+    },
+    {
+      "module": "Admin Enquiries",
+      "permission": 9
+    },
+    {
+      "module": "Design Head",
+      "permission": 10
+    },
+    {
+      "module": "Designer",
+      "permission": 11
+    },
+    {
+      "module": "Items",
+      "permission": 12
+    },
+    {
+      "module": "Enquiry Category",
+      "permission": 13
+    },
+    {
+      "module": "Enquiry Sub-Category",
+      "permission": 14
+    },
+    {
+      "module": "Purchase Order",
+      "permission": 15
+    },
+    {
+      "module": "Stock Inward",
+      "permission": 16
+    },
+    {
+      "module": "Service Category",
+      "permission": 17
+    },
+    {
+      "module": "Units",
+      "permission": 18
+    },
+    {
+      "module": "Sample order",
+      "permission": 19
+    },
+    {
+      "module": "Accounts",
+      "permission": 20
+    },
+    {
+      "module": "Production order",
+      "permission": 21
+    },
+    {
+      "module": "Packaging",
+      "permission": 22
+    },
+    {
+      "module": "Material Category",
+      "permission": 24
+    },
+    {
+      "module": "Teams",
+      "permission": 23
+    },
+    {
+      "module": "Rate Units",
+      "permission": 25
+    },
+    {
+      "module": "Stock Size",
+      "permission": 26
+    },
+    {
+      "module": "Material Type",
+      "permission": 27
+    },
+    {
+      "module": "Standalone Quoatation",
+      "permission": 28
+    },
+    {
+      "module": "Shift Time",
+      "permission": 30
+    },
+    {
+      "module": "DTP Dashboard",
+      "permission": 31
+    },
+    {
+      "module": "Operation Planning",
+      "permission": 29
+    },
+    {
+      "module": "Store",
+      "permission": 33
+    },
+    {
+      "module": "Procurement",
+      "permission": 32
+    },
+    {
+      "module": "Shopfloor",
+      "permission": 34
+    },
+    {
+      "module": "Laser Cutting",
+      "permission": 35
+    },
+    {
+      "module": "UV Print Studio",
+      "permission": 37
+    },
+    {
+      "module": "Work",
+      "permission": 38
+    },
+    {
+      "module": "Company",
+      "permission": 39
+    },
+    {
+      "module": "Control Tower",
+      "permission": 40
+    },
+    {
+      "module": "Finished Goods Store",
+      "permission": 41
+    },
+    {
+      "module": "Quality Control",
+      "permission": 42
+    },
+    {
+      "module": "Packing",
+      "permission": 43
+    },
+    {
+      "module": "Assembly Bay",
+      "permission": 44
+    },
+    {
+      "module": "Client Servicing Hub",
+      "permission": 45
+    },
+    {
+      "module": "Job Ledger",
+      "permission": 46
+    },
+    {
+      "module": "Accounts Console",
+      "permission": 47
+    },
+    {
+      "module": "General Account",
+      "permission": 48
+    },
+    {
+      "module": "Bank Master",
+      "permission": 49
+    }
+  ]
+}

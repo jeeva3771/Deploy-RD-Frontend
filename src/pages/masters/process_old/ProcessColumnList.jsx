@@ -1,0 +1,244 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAllProcessColumns,
+  deleteProcessColumn,
+  setFilters,
+  setPagination,
+  setSortConfig as setReduxSortConfig,
+  resetFilters,
+  resetSortConfig,
+  resetPagination,
+} from "../../../reducer/processColumnReducer";
+import { toast } from "react-toastify";
+import { capitalizeFirst } from "../../../utils/helper/capitalize";
+import ActionButtons from "../../components/ActionButtons";
+import SortableHeader from "../../components/SortableHeader";
+import Pagination from "../../components/Pagination";
+import DeleteModal from "../../components/DeleteModal";
+import StatusBadge from "../../components/StatusBadge";
+import ColumnViewModal from "./ColumnViewModal";
+
+const ProcessColumnList = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [viewModalData, setViewModalData] = useState(null);
+  const [deleteModalData, setDeleteModalData] = useState(null);
+
+  // Redux state
+  const { processColumns, loading, pagination, filters, sortConfig } =
+    useSelector((state) => state.processColumn);
+
+  // Fetch process columns on mount and when filters/pagination/sorting change
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const params = {
+          page: pagination.page,
+          limit: pagination.limit,
+          search: filters.search,
+        };
+
+        // Add sorting parameters if available
+        if (sortConfig.key) {
+          params.sortBy = sortConfig.key;
+          params.sortOrder = sortConfig.direction;
+        }
+
+        // Add filters
+        if (filters.is_active !== "") {
+          params.is_active = filters.is_active;
+        }
+
+        await dispatch(fetchAllProcessColumns(params)).unwrap();
+      } catch (error) {
+        toast.error(error?.message || "Failed to fetch process columns");
+      }
+    };
+
+    fetchData();
+  }, [
+    dispatch,
+    pagination.page,
+    pagination.limit,
+    filters.search,
+    filters.is_active,
+    sortConfig,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPagination());
+      dispatch(resetFilters());
+      dispatch(resetSortConfig());
+    };
+  }, [dispatch]);
+
+  const startIndex = (pagination.page - 1) * pagination.limit;
+
+  const handleSort = (key) => {
+    const newDirection =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+
+    dispatch(setReduxSortConfig({ key, direction: newDirection }));
+  };
+
+  const handleSearchChange = (value) => {
+    dispatch(setFilters({ search: value }));
+    dispatch(setPagination({ page: 1 }));
+  };
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPagination({ page: newPage }));
+  };
+
+  const handleItemsPerPageChange = (newLimit) => {
+    dispatch(setPagination({ limit: newLimit, page: 1 }));
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await dispatch(deleteProcessColumn(deleteModalData.id)).unwrap();
+      toast.success("Process column deleted successfully");
+
+      // Refetch process columns after deletion
+      const params = {
+        page: pagination.page,
+        limit: pagination.limit,
+        search: filters.search,
+      };
+
+      if (sortConfig.key) {
+        params.sortBy = sortConfig.key;
+        params.sortOrder = sortConfig.direction;
+      }
+
+      await dispatch(fetchAllProcessColumns(params)).unwrap();
+    } catch (error) {
+      toast.error(error?.message || "Error deleting process column");
+    } finally {
+      setDeleteModalData(null);
+    }
+  };
+
+  return (
+    <div className="bg-gray-50 mt-[5vh]">
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <div className="relative w-full md:w-64">
+            <input
+              type="text"
+              placeholder="Search name..."
+              value={filters.search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-gray-400">🔍</span>
+            </div>
+          </div>
+          <button
+            className="flex items-center px-4 py-2 text-white rounded-md"
+            style={{ backgroundColor: "#574fdd" }}
+            onClick={() => navigate("/processcolumn/add")}
+          >
+            <i className="fa-solid fa-plus mr-2"></i>Add
+          </button>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    S.No
+                  </th>
+                  <SortableHeader
+                    label="Name"
+                    sortKey="name"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
+                    label="Status"
+                    sortKey="is_active"
+                    sortConfig={sortConfig}
+                    onSort={handleSort}
+                  />
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-gray-200">
+                {!loading && processColumns.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="4"
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      No data found
+                    </td>
+                  </tr>
+                ) : (
+                  processColumns.map((item, idx) => (
+                    <tr
+                      key={item.id}
+                      className={`hover:bg-gray-50 ${idx % 2 === 1 ? "bg-gray-50" : ""
+                        }`}
+                    >
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {startIndex + idx + 1}
+                      </td>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                        {capitalizeFirst(item.name)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <StatusBadge isActive={item.is_active} />
+                      </td>
+                      <td className="px-6 py-4">
+                        <ActionButtons
+                          item={item}
+                          onView={() => setViewModalData(item)}
+                          onEdit={true}
+                          editPath={`/processcolumn/edit/${item.id}`}
+                          onDelete={() => setDeleteModalData(item)}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+            itemsPerPage={pagination.limit}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            totalCount={pagination.total}
+            startIndex={startIndex}
+            visibleItemCount={processColumns.length}
+            listType={true}
+          />
+        </div>
+      </div>
+      <ColumnViewModal
+        viewModalData={viewModalData}
+        onClose={() => setViewModalData(null)}
+      />
+      <DeleteModal
+        deleteModalData={deleteModalData}
+        onCancel={() => setDeleteModalData(null)}
+        confirmDelete={confirmDelete}
+      />
+    </div>
+  );
+};
+
+export default ProcessColumnList;
